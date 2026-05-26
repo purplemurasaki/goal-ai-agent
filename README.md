@@ -11,6 +11,16 @@
 
 詳細は [design/draft.md](design/draft.md) を参照してください。
 
+要件の詳細（MVP）は [design/requirements.md](design/requirements.md) を参照してください。
+
+## 設計ドキュメント
+
+| ドキュメント | 内容 |
+|--------------|------|
+| [design/draft.md](design/draft.md) | ビジョン・技術スタック概要 |
+| [design/requirements.md](design/requirements.md) | 要件設計書（MVP） |
+| [design/procedure.md](design/procedure.md) | 開発工程 |
+
 ## 開発の進め方
 
 工程一覧と手順は [design/procedure.md](design/procedure.md) に従って進めます。

@@ -48,6 +48,7 @@
 | AI                   | OpenAI              |                                                     |
 | AI構築               | LangChain,LangGraph |                                                     |
 
+- 環境はDockerで構築する。
 - PR作成時にCIでテストとビルド
 - mainブランチにプッシュのタイミングでCIでテストとビルド、CDでデプロイ
 

@@ -19,6 +19,7 @@
 |--------------|------|
 | [design/draft.md](design/draft.md) | ビジョン・技術スタック概要 |
 | [design/requirements.md](design/requirements.md) | 要件設計書（MVP） |
+| [design/database.md](design/database.md) | DB 設計書（物理スキーマ・RLS） |
 | [design/procedure.md](design/procedure.md) | 開発工程 |
 
 ## 開発の進め方

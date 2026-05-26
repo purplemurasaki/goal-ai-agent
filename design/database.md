@@ -590,7 +590,7 @@ db/
 
 **実装順序:** ENUM → テーブル → インデックス → 関数・トリガー → RLS
 
-**マイグレーションツール:** 技術スタック具体化工程で選定（Supabase CLI / sqitch / 手動 SQL 等）
+**マイグレーションツール:** Supabase CLI（[tech-stack.md](tech-stack.md) §14）
 
 ---
 

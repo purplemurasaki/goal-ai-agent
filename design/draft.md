@@ -31,17 +31,18 @@
 
 ---
 
-|                      | ライブラリ          | 備考                                                |
-| -------------------- | ------------------- | --------------------------------------------------- |
-| クラウド             | CloudFlare          | 使用するサービスは別で具体化する                    |
-| フロントエンド       | Nextjs              | SSR対応。設計思想、ディレクトリ構成は別で具体化する |
-| バックエンド         | FastAPI             | 設計思想、ディレクトリ構成は別で具体化する          |
-| DB                   | Supabase            |                                                     |
-| DBマイグレーション   | 未定                |                                                     |
-| 認証                 | Supabase            |                                                     |
-| フロントエンドテスト | 未定                | ライブラリとテスト方針は別で具体化                  |
-| バックエンドテスト   | 未定                | ライブラリとテスト方針は別で具体化                  |
-| E2Eテスト            | Playwright          | テスト方針は別で具体化                              |
+|                      | ライブラリ                    | 備考                                                                 |
+| -------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| クラウド（FE/CDN）   | Cloudflare                    | Pages（Next.js SSR）、DNS、WAF。詳細は [tech-stack.md](tech-stack.md) |
+| クラウド（API）      | AWS App Runner                | MVP 推奨。代替: ECS Fargate。FastAPI コンテナ                          |
+| フロントエンド       | Next.js 15（App Router）      | OpenNext + Cloudflare Pages。構成は [tech-stack.md](tech-stack.md)   |
+| バックエンド         | FastAPI                       | AWS 上でホスト。構成は [tech-stack.md](tech-stack.md)                |
+| DB                   | Supabase                      | PostgreSQL + Auth                                                    |
+| DBマイグレーション   | Supabase CLI                  | `supabase/migrations/`                                               |
+| 認証                 | Supabase Auth（Google OAuth） | JWT を FastAPI に Bearer 送信                                        |
+| フロントエンドテスト | Vitest + RTL + MSW            | 方針は [tech-stack.md](tech-stack.md) §12                            |
+| バックエンドテスト   | pytest + httpx                | 方針は [tech-stack.md](tech-stack.md) §12                            |
+| E2Eテスト            | Playwright                    | 方針は [tech-stack.md](tech-stack.md) §12                            |
 | インフラ構築         | Terraform           |                                                     |
 | 構成管理             | GitHub              | gitflowをベースに適用                               |
 | CICD                 | GitHubActions       |                                                     |

@@ -20,6 +20,7 @@
 | [design/draft.md](design/draft.md) | ビジョン・技術スタック概要 |
 | [design/requirements.md](design/requirements.md) | 要件設計書（MVP） |
 | [design/database.md](design/database.md) | DB 設計書（物理スキーマ・RLS） |
+| [design/tech-stack.md](design/tech-stack.md) | 技術スタック設計書（アーキテクチャ・API・構成） |
 | [design/procedure.md](design/procedure.md) | 開発工程 |
 
 ## 開発の進め方
@@ -30,13 +31,14 @@
 
 | 領域 | 技術 |
 |------|------|
-| クラウド | Cloudflare |
-| フロントエンド | Next.js（SSR） |
+| クラウド（FE/CDN） | Cloudflare Pages |
+| クラウド（API） | AWS App Runner（MVP 推奨） |
+| フロントエンド | Next.js 15（SSR / App Router） |
 | バックエンド | FastAPI |
 | DB / 認証 | Supabase |
 | E2E テスト | Playwright |
 | インフラ | Terraform |
 | CI/CD | GitHub Actions |
-| AI | OpenAI, LangChain, LangGraph |
+| AI | OpenAI, LangGraph |
 
-スタックの詳細・具体化は今後の設計書で定義します。一覧は [design/draft.md](design/draft.md) を参照してください。
+スタックの詳細は [design/tech-stack.md](design/tech-stack.md) を参照してください。概要は [design/draft.md](design/draft.md) に記載しています。

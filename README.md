@@ -27,6 +27,12 @@
 
 工程一覧と手順は [design/procedure.md](design/procedure.md) に従って進めます。
 
+## 開発ルール（プロジェクト固有）
+
+- 詳細ルール: [`.cursor/rules/project-rules.md`](.cursor/rules/project-rules.md)
+- PR/レビューの補助: [`.github/pull_request_template.md`](.github/pull_request_template.md)
+- コントリビューション: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+
 ## 技術スタック（概要）
 
 | 領域 | 技術 |

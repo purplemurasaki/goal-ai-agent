@@ -34,7 +34,7 @@
 |                      | ライブラリ                    | 備考                                                                 |
 | -------------------- | ----------------------------- | -------------------------------------------------------------------- |
 | クラウド（FE/CDN）   | Cloudflare                    | Pages（Next.js SSR）、DNS、WAF。詳細は [tech-stack.md](tech-stack.md) |
-| クラウド（API）      | AWS App Runner                | MVP 推奨。代替: ECS Fargate。FastAPI コンテナ                          |
+| クラウド（API）      | AWS App Runner                | FastAPI コンテナ（MVP 前提）                                          |
 | フロントエンド       | Next.js 15（App Router）      | OpenNext + Cloudflare Pages。構成は [tech-stack.md](tech-stack.md)   |
 | バックエンド         | FastAPI                       | AWS 上でホスト。構成は [tech-stack.md](tech-stack.md)                |
 | DB                   | Supabase                      | PostgreSQL + Auth                                                    |

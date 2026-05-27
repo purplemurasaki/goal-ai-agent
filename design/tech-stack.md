@@ -45,9 +45,9 @@ flowchart TB
     DNS[DNS_WAF_CDN]
   end
   subgraph aws [AWS]
-    APIHost[AppRunner_or_ECS_Fargate]
+    AppRunner[AWS_AppRunner]
     FastAPI[FastAPI_Container]
-    APIHost --> FastAPI
+    AppRunner --> FastAPI
   end
   subgraph supa [Supabase]
     Auth[Auth_Google_OAuth]
@@ -87,7 +87,7 @@ flowchart TB
 | 領域 | サービス | 用途 |
 |------|----------|------|
 | フロントホスティング | Cloudflare Pages | Next.js SSR 配信 |
-| API ホスティング | **AWS App Runner**（MVP 推奨）または ECS Fargate | FastAPI コンテナ |
+| API ホスティング | **AWS App Runner（MVP）** | FastAPI コンテナ |
 | DB / Auth | Supabase（マネージド） | PostgreSQL、Google OAuth |
 | DNS / WAF | Cloudflare | ドメイン、キャッシュ、基本 WAF |
 | AI | OpenAI API | GPT、Moderation |
@@ -103,24 +103,12 @@ MVP では **ブラウザ → AWS App Runner（FastAPI）を直接呼び出す**
 
 ### 2.5 AWS ホスティング選定
 
-| 観点 | App Runner | ECS Fargate |
-|------|------------|-------------|
-| MVP 運用負荷 | 低（コンテナデプロイ中心） | 高（ALB / VPC / タスク定義） |
-| コスト（小規模） | 従量・シンプル | 固定費が乗りやすい |
-| Terraform 後工程 | 比較的単純 | モジュール分割しやすい |
-| ネットワーク制御 | 限定的 | VPC 内統合・セキュリティグループ細かく設定可 |
-| 将来拡張 | 中規模まで十分 | 大規模・複数サービス連携向き |
-
-**MVP デフォルト: AWS App Runner**
+**MVP: AWS App Runner**
 
 - 単一コンテナ、最小インスタンス、オートスケール
 - Supabase への接続はパブリック egress + Supabase connection pooling（Transaction mode）で足りる想定
 
-**ECS Fargate を選ぶ条件（代替）:**
-
-- 組織標準が ECS
-- VPC 内の他 AWS リソース（Secrets Manager、内部 ALB）との統合が必須
-- App Runner の制約（カスタムネットワーク等）に抵触する場合
+ECS Fargate は **MVP の前提には含めない**（必要になった時点で代替案として検討する。詳細は §16.2）。
 
 ### 2.6 Cloudflare Pages + Next.js SSR
 
@@ -600,10 +588,18 @@ supabase/migrations/
 |--------|------|
 | OpenNext + Pages の Node API 制約 | ビルド CI で検出。Edge 非対応処理は分離 |
 | App Runner のコールドスタート | 最小インスタンス 1（コストとトレードオフ） |
-| ECS 採用時の Terraform 工数 | MVP は App Runner を維持し、必要時のみ ECS へ移行 |
+| App Runner の制約に抵触 | §16.2 の代替案（ECS Fargate）を検討 |
 | CORS / 本番 URL 変更 | `CORS_ORIGINS` を環境ごとに管理 |
 
 ---
+
+## 16.2 代替案（必要時のみ）: ECS Fargate
+
+MVP では App Runner 前提とする。以下の条件に該当する場合のみ ECS Fargate を検討する。
+
+- 組織標準が ECS / ALB
+- VPC 内の他 AWS リソース（Secrets Manager、Private サブネット等）との統合が必須
+- App Runner の制約（ネットワーク/スケール/デプロイ要件）に抵触
 
 ## 改訂履歴
 

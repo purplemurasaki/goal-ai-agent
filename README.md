@@ -22,6 +22,7 @@
 | [design/database.md](design/database.md) | DB 設計書（物理スキーマ・RLS） |
 | [design/tech-stack.md](design/tech-stack.md) | 技術スタック設計書（アーキテクチャ・API・構成） |
 | [design/procedure.md](design/procedure.md) | 開発工程 |
+| [supabase/README.md](supabase/README.md) | ローカル DB の起動・確認手順 |
 
 ## 開発の進め方
 

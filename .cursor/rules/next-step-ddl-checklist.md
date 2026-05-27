@@ -62,4 +62,5 @@
 - [x] 制約が期待通り（例: 1ユーザー1目標 UNIQUE、文字数制限 CHECK）
 - [x] RLS が有効で、他ユーザーのデータが見えない前提を崩していない
 
-ローカル検証スクリプト: `supabase/scripts/validate_constraints.sql`, `supabase/scripts/validate_rls.sql`
+ローカル検証スクリプト: `supabase/scripts/validate_constraints.sql`, `supabase/scripts/validate_rls.sql`  
+手順書: [supabase/README.md](../../supabase/README.md)

@@ -23,6 +23,12 @@
 | [design/tech-stack.md](design/tech-stack.md) | 技術スタック設計書（アーキテクチャ・API・構成） |
 | [design/procedure.md](design/procedure.md) | 開発工程 |
 | [supabase/README.md](supabase/README.md) | ローカル DB の起動・確認手順 |
+| [apps/api/README.md](apps/api/README.md) | FastAPI バックエンドの起動・テスト |
+
+## バックエンド（ローカル）
+
+1. [supabase/README.md](supabase/README.md) に従い Supabase を起動
+2. [apps/api/README.md](apps/api/README.md) の手順で API を起動（既定: http://localhost:8000）
 
 ## 開発の進め方
 

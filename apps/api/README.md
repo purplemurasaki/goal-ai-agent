@@ -1,5 +1,7 @@
 # goal-ai-agent API (FastAPI)
 
+**Supabase → API → Web の全体起動順**は [ルート README](../../README.md#ローカル開発の起動) を参照してください。
+
 ## 前提
 
 - Python 3.12+

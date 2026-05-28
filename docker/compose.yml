@@ -1,4 +1,4 @@
-services:
+﻿services:
   api:
     build:
       context: ../apps/api
@@ -12,3 +12,27 @@ services:
     volumes:
       - ../apps/api/app:/app/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../apps/web/.env.local
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+      - NEXT_PUBLIC_SITE_URL=http://127.0.0.1:3000
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      - HOSTNAME=0.0.0.0
+    volumes:
+      - ../apps/web:/workspace/apps/web
+      - web_node_modules:/workspace/apps/web/node_modules
+    depends_on:
+      - api
+    command: pnpm dev:docker
+
+volumes:
+  web_node_modules:

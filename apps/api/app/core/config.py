@@ -14,6 +14,9 @@ class Settings(BaseSettings):
         "postgresql+asyncpg://postgres:postgres@127.0.0.1:54322/postgres"
     )
     supabase_jwt_secret: str = "super-secret-jwt-token-with-at-least-32-characters-long"
+    supabase_jwks_url: str = (
+        "http://127.0.0.1:54321/auth/v1/.well-known/jwks.json"
+    )
     cors_origins: str = "http://localhost:3000"
     openai_api_key: str = ""
     openai_model_coach: str = "gpt-4o-mini"

@@ -9,6 +9,7 @@
       - ../apps/api/.env.local
     environment:
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@host.docker.internal:54322/postgres
+      - SUPABASE_JWKS_URL=http://host.docker.internal:54321/auth/v1/.well-known/jwks.json
     volumes:
       - ../apps/api/app:/app/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

@@ -7,9 +7,6 @@ import { createBrowserClient } from "@supabase/ssr";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://127.0.0.1:3000";
-
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
@@ -57,7 +54,8 @@ function LoginForm() {
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${SITE_URL}/auth/callback?next=/dashboard`,
+          // Prevent localhost/127.0.0.1 origin mismatch causing cookies on the wrong host.
+          redirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
         },
       });
 

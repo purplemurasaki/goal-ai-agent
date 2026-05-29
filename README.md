@@ -24,11 +24,146 @@
 | [design/procedure.md](design/procedure.md) | 開発工程 |
 | [supabase/README.md](supabase/README.md) | ローカル DB の起動・確認手順 |
 | [apps/api/README.md](apps/api/README.md) | FastAPI バックエンドの起動・テスト |
+| [apps/web/README.md](apps/web/README.md) | Next.js フロントの起動・OAuth・トラブルシュート |
 
-## バックエンド（ローカル）
+---
 
-1. [supabase/README.md](supabase/README.md) に従い Supabase を起動
-2. [apps/api/README.md](apps/api/README.md) の手順で API を起動（既定: http://localhost:8000）
+## ローカル開発の起動
+
+### 前提
+
+| 項目 | 内容 |
+|------|------|
+| Docker Desktop | Supabase CLI および Docker Compose 用 |
+| Node.js 22+ / pnpm | フロントをホストで起動する場合（`corepack enable` 推奨） |
+| Python 3.12+ | API をホストで起動する場合 |
+| Supabase CLI | `supabase --version` で確認 |
+
+### 初回セットアップ（環境変数）
+
+リポジトリルートで、各サービスの `.env.example` を `.env.local` にコピーし、値を設定します（**`.env.local` はコミットしない**）。
+
+```powershell
+# Supabase（Google OAuth）
+copy supabase\.env.example supabase\.env
+
+# API
+copy apps\api\.env.example apps\api\.env.local
+
+# Web
+copy apps\web\.env.example apps\web\.env.local
+```
+
+| ファイル | 主な設定 |
+|----------|----------|
+| `supabase/.env` | Google OAuth の Client ID / Secret（[supabase/README.md](supabase/README.md) 参照） |
+| `apps/api/.env.local` | `DATABASE_URL`（`postgresql+asyncpg://...`）、`SUPABASE_JWT_SECRET`（`supabase status`）、`OPENAI_API_KEY`、`CORS_ORIGINS` |
+| `apps/web/.env.local` | `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_ANON_KEY`、`NEXT_PUBLIC_API_BASE_URL`、`NEXT_PUBLIC_SITE_URL` |
+
+**OAuth の注意:** ブラウザでは **`http://127.0.0.1:3000`** で開いてください（`localhost` と混在すると `bad_oauth_state` になります）。`NEXT_PUBLIC_SITE_URL` も `http://127.0.0.1:3000` に揃えます。
+
+API の `CORS_ORIGINS` には、少なくとも `http://127.0.0.1:3000` を含めてください（例: `http://127.0.0.1:3000,http://localhost:3000`）。
+
+---
+
+### 起動方法 A: Docker Compose（推奨）
+
+Supabase を起動したうえで、API と Web をまとめて起動します。
+
+**1. Supabase（別ターミナル・初回のみ詳細設定）**
+
+```powershell
+# リポジトリルート
+supabase start --ignore-health-check
+```
+
+**2. API + Web**
+
+```powershell
+# リポジトリルート
+docker compose -f docker/compose.yml up --build
+```
+
+バックグラウンド起動:
+
+```powershell
+docker compose -f docker/compose.yml up --build -d
+```
+
+停止:
+
+```powershell
+docker compose -f docker/compose.yml down
+```
+
+`node_modules` ボリュームを含めて作り直す場合:
+
+```powershell
+docker compose -f docker/compose.yml down -v
+docker compose -f docker/compose.yml up --build
+```
+
+---
+
+### 起動方法 B: ホストで個別起動
+
+依存関係の順に、**3 つのターミナル**で起動します。
+
+| 順 | サービス | コマンド（リポジトリルート基準） |
+|----|----------|----------------------------------|
+| 1 | Supabase | `supabase start --ignore-health-check` |
+| 2 | API | `cd apps/api` → venv 有効化 → `uvicorn app.main:app --reload --port 8000`（[apps/api/README.md](apps/api/README.md)） |
+| 3 | Web | `cd apps/web` → `pnpm install` → `pnpm dev`（[apps/web/README.md](apps/web/README.md)） |
+
+ルートから Web を起動する場合（pnpm workspace）:
+
+```powershell
+pnpm install
+pnpm --filter web dev
+```
+
+---
+
+### アクセス URL
+
+| 用途 | URL |
+|------|-----|
+| ログイン | http://127.0.0.1:3000/login |
+| ダッシュボード | http://127.0.0.1:3000/dashboard |
+| API（OpenAPI） | http://localhost:8000/docs |
+| API ヘルス | http://localhost:8000/api/v1/health |
+| Supabase Studio | `supabase status` の Studio URL |
+
+---
+
+### 動作確認の目安
+
+1. http://localhost:8000/api/v1/health が 200 を返す
+2. http://127.0.0.1:3000/login から Google ログイン → `/dashboard` へ遷移する
+3. 目標未作成時は `/goals/new` へ誘導される
+
+---
+
+### テスト・その他コマンド
+
+```powershell
+# API
+cd apps/api
+pytest
+
+# Web
+cd apps/web
+pnpm test
+pnpm lint
+
+# OpenAPI からフロント型生成（API 起動が必要）
+cd apps/web
+pnpm generate:api
+```
+
+トラブルシュート（OAuth、HMR、API 接続など）は [apps/web/README.md](apps/web/README.md) を参照してください。
+
+---
 
 ## 開発の進め方
 

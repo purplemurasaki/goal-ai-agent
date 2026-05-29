@@ -137,7 +137,7 @@ export default function GoalsNewPage() {
       if (!session?.access_token) {
         throw new ApiError({
           code: "UNAUTHORIZED",
-          message: "譛ｪ隱崎ｨｼ縺ｧ縺・,
+          message: "未認証です",
           status: 401,
         });
       }
@@ -194,10 +194,10 @@ export default function GoalsNewPage() {
   return (
     <main className="p-4 flex flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold">逶ｮ讓吶ｒ菴懈・</h1>
+        <h1 className="text-xl font-semibold">目標を作成</h1>
         <Link href="/dashboard">
           <Button variant="outline" size="sm">
-            繝繝・す繝･繝懊・繝峨∈
+            ダッシュボードへ
           </Button>
         </Link>
       </div>
@@ -205,7 +205,7 @@ export default function GoalsNewPage() {
       {!goal ? (
         <Card>
           <CardHeader>
-            <CardTitle>逶ｮ讓吶ヵ繧ｩ繝ｼ繝</CardTitle>
+            <CardTitle>目標フォーム</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <form
@@ -213,20 +213,20 @@ export default function GoalsNewPage() {
               onSubmit={form.handleSubmit((values) => goalCreate.mutate(values))}
             >
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium">繧ｿ繧､繝医Ν</label>
-                <Input {...form.register("title")} placeholder="萓・ 蜑ｯ讌ｭ縺ｧ譛・0荳・・繧帝＃謌・ />
+                <label className="text-sm font-medium">タイトル</label>
+                <Input {...form.register("title")} placeholder="例: 副業で月10万円を達成" />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium">譛滄剞</label>
+                <label className="text-sm font-medium">期限</label>
                 <Input type="date" {...form.register("due_date")} />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium">隱ｬ譏趣ｼ井ｻｻ諢擾ｼ・/label>
+                <label className="text-sm font-medium">説明（任意）</label>
                 <Textarea
                   {...form.register("description")}
-                  placeholder="陬懆ｶｳ縺後≠繧後・蜈･蜉帙＠縺ｦ縺上□縺輔＞"
+                  placeholder="補足があれば入力してください"
                 />
               </div>
 
@@ -243,7 +243,7 @@ export default function GoalsNewPage() {
 
 
               <Button type="submit" disabled={goalCreate.isPending}>
-                {goalCreate.isPending ? "菴懈・荳ｭ..." : "逶ｮ讓吶ｒ菴懈・"}
+                {goalCreate.isPending ? "作成中..." : "目標を作成"}
               </Button>
             </form>
           </CardContent>
@@ -254,7 +254,7 @@ export default function GoalsNewPage() {
         <Card>
           <CardHeader className="flex flex-row items-start justify-between gap-4">
             <div>
-              <CardTitle>coaching 繝√Ε繝・ヨ</CardTitle>
+              <CardTitle>coaching チャット</CardTitle>
               <p className="text-sm text-foreground/70 truncate">
                 {goal.title}
               </p>
@@ -267,19 +267,19 @@ export default function GoalsNewPage() {
               }}
               disabled={streaming}
             >
-              蛻・ｧ｣縺ｸ騾ｲ繧
+              分解へ進む
             </Button>
           </CardHeader>
 
           <CardContent className="flex flex-col gap-4">
             <div className="rounded-md border border-foreground/10 p-3 h-72 overflow-auto">
               {coachingMessagesQuery.isLoading ? (
-                <Spinner label="螻･豁ｴ繧定ｪｭ縺ｿ霎ｼ縺ｿ荳ｭ..." />
+                <Spinner label="履歴を読み込み中..." />
               ) : coachingMessagesQuery.error ? (
                 <ErrorBox error={coachingMessagesQuery.error} />
               ) : messagesView.length === 0 ? (
                 <p className="text-sm text-foreground/70">
-                  蜈ｷ菴灘喧縺励◆縺・％縺ｨ繧帝∽ｿ｡縺励※縺上□縺輔＞縲・
+                  具体化したいことを送信してください。
                 </p>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -317,11 +317,11 @@ export default function GoalsNewPage() {
               <Textarea
                 value={chatDraft}
                 onChange={(e) => setChatDraft(e.target.value)}
-                placeholder="萓・ 縺ｩ縺・＞縺・｡悟虚縺ｫ關ｽ縺ｨ縺帙・縺・＞・・
+                placeholder="例: どういう行動に落とせばいい？"
                 disabled={streaming}
               />
               <Button type="submit" disabled={streaming || !chatDraft.trim()}>
-                {streaming ? "騾∽ｿ｡荳ｭ..." : "騾∽ｿ｡"}
+                {streaming ? "送信中..." : "送信"}
               </Button>
             </form>
           </CardContent>
@@ -332,5 +332,3 @@ export default function GoalsNewPage() {
     </main>
   );
 }
-
-

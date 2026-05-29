@@ -2,6 +2,8 @@
 
 フロントエンド（Next.js App Router）のローカル開発手順です。
 
+**Supabase → API → Web の全体起動順**は [ルート README](../../README.md#ローカル開発の起動) を参照してください。
+
 関連: [design/tech-stack.md](../../design/tech-stack.md) §10 / [supabase/README.md](../../supabase/README.md) / [apps/api/README.md](../api/README.md)
 
 ---
